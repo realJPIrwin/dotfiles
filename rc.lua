@@ -53,7 +53,7 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -281,7 +281,9 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+ 
+ 
+     awful.key({ modkey,           }, "t", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
@@ -356,6 +358,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "e",     function () 
         awful.util.spawn("thunar") end,
         {description = "Thunar", group="Applications"}),
+
+-- launch weather 	
+    awful.key({modkey},              "w",       function()
+	    awful.spawn(terminal.." -e curl wttr.in") end,
+	    {description = "Weather",group="Applications"}),
 
 --launch proton vpn
 
@@ -593,19 +600,24 @@ client.connect_signal("request::titlebars", function(c)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-        and awful.client.focus.filter(c) then
-        client.focus = c
-    end
-end)
+--client.connect_signal("mouse::enter", function(c)
+ --   if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+  --      and awful.client.focus.filter(c) then
+--        client.focus = c
+--    end
+--end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
+-- Gaps 
+beautiful.useless_gap = 7
+
 -- auto start applications
 awful.spawn.with_shell("compton")
-awful.spawn.with_shell("nitrogen --restore")
+--awful.spawn.with_shell("nitrogen --restore")
 awful.spawn.with_shell("xmodmap -e 'pointer = 3 2 1'") --dis reverse maus baton
+-- dis draw bagrou
+awful.spawn.with_shell("sleep 0.25s && nitrogen --restore") -- for some reason need to sleep briefly to to run
 
