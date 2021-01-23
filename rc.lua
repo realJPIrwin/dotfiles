@@ -1,3 +1,4 @@
+--need to install: backlight_control
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -41,7 +42,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 -- Chosen colors and buttons look alike adapta maia theme
-beautiful.init("/usr/share/awesome/themes/cesious/theme.lua")
+beautiful.init("/usr/share/awesome/themes/cesious-theme/cesious/theme.lua")
 beautiful.icon_theme        = "Papirus-Dark"
 beautiful.bg_normal         = "#222D32"
 beautiful.bg_focus          = "#2C3940"
@@ -317,7 +318,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)                 end,
+    awful.key({ modkey,           }, "g",     function () awful.tag.incmwfact( 0.05)                 end,
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)                 end,
               {description = "decrease master width factor", group = "layout"}),
@@ -365,8 +366,10 @@ globalkeys = gears.table.join(
         awful.key({ modkey },            "c",     function () 
         --awful.util.spawn("dmenu_run") end,
         awful.spawn.with_shell("xfce4-screenshooter -r") end, -- -r option initiates mouse select
-        {description = "take screenshot", group="launcher"}),
-
+        {description = "take screenshot", group="screen"}),
+        awful.key({ modkey },            "l",     function () 
+        awful.spawn.with_shell("xsecurelock") end, -- -r option initiates mouse select
+        {description = "Lock screen", group="screen"}),
 
 
     awful.key({ modkey }, "ö",
@@ -668,4 +671,15 @@ end
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
 -- autostart 
-awful.spawn.with_shell("sleep 0.45s && nitrogen --restore") 
+-- awful.spawn.with_shell("sleep 0.45s && nitrogen --restore") 
+--
+awful.spawn.with_shell("nm-applet") --wifi applet
+awful.spawn.with_shell("cbatticon")  -- batery/power monitor
+awful.spawn.with_shell("kmix") -- sound widget
+awful.spawn.with_shell("xfce4-clipman") -- allows clipboard screen cap
+awful.spawn.with_shell("udiskie") --auto mounts USB drives
+awful.spawn.with_shell("compton")
+awful.spawn.with_shell("redshift")
+awful.spawn.with_shell("nitrogen --restore")
+awful.spawn.with_shell("setxkbmap -layout 'us,ru' -option grp:alt_space_toggle")
+
